@@ -1,0 +1,2 @@
+red: #cc0000
+green: #44cc00
