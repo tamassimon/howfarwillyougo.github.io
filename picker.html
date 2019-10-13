@@ -38,6 +38,22 @@
         Dont eat meat
       </div>
     </div><!-- row end -->
+    <div class="row">
+      <div class="col-md-1">
+        <input id="check-policy-nuclear" type="checkbox"/>
+      </div>
+      <div class="col-md-auto">
+        Research nuclear energy
+      </div>
+    </div><!-- row end -->
+    <div class="row">
+      <div class="col-md-1">
+        <input id="check-policy-against-airport-expansion" type="checkbox"/>
+      </div>
+      <div class="col-md-auto">
+        Stop airport expansion
+      </div>
+    </div><!-- row end -->
 
   <div class="col-md-auto">
     <img id="my-assembled-image"/>
@@ -57,13 +73,13 @@
  $( document ).ready(function() {
    $("form input:checkbox").change(function ( event ) {
 
+    imagesToMerge = [
+      {src: 'PNG/howfarwillyougo-earth-base-left-200.png', x:0, y:0}
+    ];
 
-     imagesToMerge = [
-              {src: 'PNG/howfarwillyougo-earth-base-left-200.png', x:0, y:0},
-              // {src: 'PNG/no-airplane-100.png', x: 175, y: 25},
-              // {src: 'PNG/do-electric-vehicle-100.png', x: 275, y: 25},
-              // {src: 'PNG/no-meat-100.png', x:375, y:25}
-            ];
+    for(xOffset = 545; xOffset < $("form input:checked").length*100+175; xOffset+= 100) {
+        imagesToMerge.push({src: 'PNG/howfarwillyougo-earth-base-spacer-200.png', x: xOffset, y: 0});
+    }
 
     xOffset = 175;
     if ($("#check-no-airplane:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
@@ -79,8 +95,19 @@
       imagesToMerge.push({src: 'PNG/no-meat-100.png', x: xOffset, y: 25});
       xOffset += 100;
     }
+    if ($("#check-policy-nuclear:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
+      imagesToMerge.push({src: 'PNG/policy-nuclear-100.png', x: xOffset, y: 25});
+      xOffset += 100;
+    }
+    if ($("#check-policy-against-airport-expansion:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
+      imagesToMerge.push({src: 'PNG/policy-against-airport-expansion-100.png', x: xOffset, y: 25});
+      xOffset += 100;
+    }
 
-    mergeImages(imagesToMerge).then(b64 => {
+    if (xOffset < 545) xOffset = 545;
+    imagesToMerge.push({src: 'PNG/howfarwillyougo-earth-base-right-200.png', x: xOffset, y: 0});
+
+    mergeImages(imagesToMerge, {width: xOffset+37, height: 200}).then(b64 => {
        $( "#my-assembled-image").attr('src', b64);
        $( "#my-download-link").attr('href', b64);
      });
