@@ -13,44 +13,37 @@
   <body>
 
 <form>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col col-lg-1">
-        <input type="checkbox"/>
-      </div>
-      <div class="col-sm-2">
-        <img src="PNG/no%20airplane.png" width="100" height="100"/>
+      <div class="col-md-1">
+        <input id="check-no-airplane" type="checkbox"/>
       </div>
       <div class="col-md-auto">
         Do not fly
       </div>
     </div><!-- row end -->
     <div class="row">
-      <div class="col col-lg-1">
-        <input type="checkbox"/>
-      </div>
-      <div class="col-sm-2">
-        <img src="PNG/electric%20vehicle.png" width="100" height="100"/>
+      <div class="col-md-1">
+        <input id="check-do-electric-vehicle" type="checkbox"/>
       </div>
       <div class="col-md-auto">
         Electric car
       </div>
     </div><!-- row end -->
     <div class="row">
-      <div class="col col-lg-1">
-        <input type="checkbox"/>
-      </div>
-      <div class="col-sm-2">
-        <img src="PNG/no%20meat%20fixed.png" width="100" height="100"/>
+      <div class="col-md-1">
+        <input id="check-no-meat" type="checkbox"/>
       </div>
       <div class="col-md-auto">
         Dont eat meat
       </div>
     </div><!-- row end -->
 
-  <div class="col col-lg-6">
+  <div class="col-md-auto">
     <img id="my-assembled-image"/>
+    <div class="alert alert-success" role="alert">
     <a id="my-download-link" download>Click here to download</a>
+    </div>
   </div>
 </div> <!-- container end -->
 </form>
@@ -62,24 +55,37 @@
 
 <script type="text/javascript">
  $( document ).ready(function() {
-   $("form input:checkbox").click(function ( event ) {
-     // alert("Thanks for checking me"); // do cool shit here
+   $("form input:checkbox").change(function ( event ) {
 
-     mergeImages(
-       [
-         {src: 'PNG/howfarwillyougo-earth-base-left-200.png', x:0, y:0},
-         {src: 'PNG/no-airplane-100.png', x: 175, y: 25},
-         {src: 'PNG/do-electric-vehicle-100.png', x: 275, y: 25},
-         {src: 'PNG/no-meat-100.png', x:375, y:25}
-       ]
-       //,{ width: 200, height: 200 }
-   )
-     .then(b64 => {
+
+     imagesToMerge = [
+              {src: 'PNG/howfarwillyougo-earth-base-left-200.png', x:0, y:0},
+              // {src: 'PNG/no-airplane-100.png', x: 175, y: 25},
+              // {src: 'PNG/do-electric-vehicle-100.png', x: 275, y: 25},
+              // {src: 'PNG/no-meat-100.png', x:375, y:25}
+            ];
+
+    xOffset = 175;
+    if ($("#check-no-airplane:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
+      // alert("Thanks for checking me"); // do cool shit here
+      imagesToMerge.push({src: 'PNG/no-airplane-100.png', x: xOffset, y: 25});
+      xOffset += 100;
+    }
+    if ($("#check-do-electric-vehicle:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
+      imagesToMerge.push({src: 'PNG/do-electric-vehicle-100.png', x: xOffset, y: 25});
+      xOffset += 100;
+    }
+    if ($("#check-no-meat:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
+      imagesToMerge.push({src: 'PNG/no-meat-100.png', x: xOffset, y: 25});
+      xOffset += 100;
+    }
+
+    mergeImages(imagesToMerge).then(b64 => {
        $( "#my-assembled-image").attr('src', b64);
        $( "#my-download-link").attr('href', b64);
      });
 
-     event.preventDefault();
+     // event.preventDefault();
    });
  });
 </script>
