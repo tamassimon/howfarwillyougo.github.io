@@ -15,53 +15,44 @@
 <form>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-1">
-        <input id="check-no-airplane" type="checkbox"/>
-      </div>
-      <div class="col-md-auto">
-        Do not fly
-      </div>
-    </div><!-- row end -->
-    <div class="row">
-      <div class="col-md-1">
-        <input id="check-do-electric-vehicle" type="checkbox"/>
-      </div>
-      <div class="col-md-auto">
-        Electric car
-      </div>
-    </div><!-- row end -->
-    <div class="row">
-      <div class="col-md-1">
-        <input id="check-no-meat" type="checkbox"/>
-      </div>
-      <div class="col-md-auto">
-        Dont eat meat
-      </div>
-    </div><!-- row end -->
-    <div class="row">
-      <div class="col-md-1">
-        <input id="check-policy-nuclear" type="checkbox"/>
-      </div>
-      <div class="col-md-auto">
-        Research nuclear energy
-      </div>
-    </div><!-- row end -->
-    <div class="row">
-      <div class="col-md-1">
-        <input id="check-policy-against-airport-expansion" type="checkbox"/>
-      </div>
-      <div class="col-md-auto">
-        Stop airport expansion
+      <div class="col-md-6">
+
+        <div class="form-check">
+          <input class="form-check-input" id="check-no-airplane" type="checkbox" data-icon="PNG/no-airplane-100.png"/>
+          <label class="form-check-label" for="check-no-airplane">Do not fly</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" id="check-do-electric-vehicle" type="checkbox" data-icon="PNG/do-electric-vehicle-100.png"/>
+          <label class="form-check-label" for="check-do-electric-vehicle">Electric car</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" id="check-no-meat" type="checkbox" data-icon="PNG/no-meat-100.png"/>
+          <label class="form-check-label" for="check-no-meat">Do not eat meat</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" id="check-policy-nuclear" type="checkbox" data-icon="PNG/policy-nuclear-100.png"/>
+          <label class="form-check-label" for="check-policy-nuclear">Policy support for nuclear energy research</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" id="check-policy-against-airport-expansion" type="checkbox" data-icon="PNG/policy-against-airport-expansion-100.png"/>
+          <label class="form-check-label" for="check-policy-against-airport-expansion">Policy to stop airport expansion</label>
+        </div>
+
       </div>
     </div><!-- row end -->
 
-  <div class="col-md-auto">
-    <img id="my-assembled-image"/>
-    <div class="alert alert-success" role="alert">
-    <a id="my-download-link" download>Click here to download</a>
-    </div>
-  </div>
-</div> <!-- container end -->
+    <div class="row" id="my-generated-content">
+      <div class="col-md-6">
+        <img id="my-assembled-image"/>
+        <div class="alert alert-success" role="alert">
+          <a id="my-download-link" download>Click here to download</a>
+        </div>
+      </div>
+  </div> <!-- container end -->
 </form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -71,6 +62,12 @@
 
 <script type="text/javascript">
  $( document ).ready(function() {
+   // this code build the image and shows it based on chich checkbox is selected.
+   // to extend the page add another checkbox and set the data-icon attribute
+   // icons are 100x100 pixels
+
+   $("#my-generated-content").hide();
+
    $("form input:checkbox").change(function ( event ) {
 
     imagesToMerge = [
@@ -82,27 +79,11 @@
     }
 
     xOffset = 175;
-    if ($("#check-no-airplane:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
-      // alert("Thanks for checking me"); // do cool shit here
-      imagesToMerge.push({src: 'PNG/no-airplane-100.png', x: xOffset, y: 25});
+
+    $("form input:checked").each(function(){
+      imagesToMerge.push({src: $(this).data("icon"), x: xOffset, y: 25});
       xOffset += 100;
-    }
-    if ($("#check-do-electric-vehicle:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
-      imagesToMerge.push({src: 'PNG/do-electric-vehicle-100.png', x: xOffset, y: 25});
-      xOffset += 100;
-    }
-    if ($("#check-no-meat:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
-      imagesToMerge.push({src: 'PNG/no-meat-100.png', x: xOffset, y: 25});
-      xOffset += 100;
-    }
-    if ($("#check-policy-nuclear:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
-      imagesToMerge.push({src: 'PNG/policy-nuclear-100.png', x: xOffset, y: 25});
-      xOffset += 100;
-    }
-    if ($("#check-policy-against-airport-expansion:checked").length > 0) { // it is a fucked up way to see if the checkbox is checked
-      imagesToMerge.push({src: 'PNG/policy-against-airport-expansion-100.png', x: xOffset, y: 25});
-      xOffset += 100;
-    }
+    });
 
     if (xOffset < 545) xOffset = 545;
     imagesToMerge.push({src: 'PNG/howfarwillyougo-earth-base-right-200.png', x: xOffset, y: 0});
@@ -112,7 +93,7 @@
        $( "#my-download-link").attr('href', b64);
      });
 
-     // event.preventDefault();
+     $("#my-generated-content").show();
    });
  });
 </script>
