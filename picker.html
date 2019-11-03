@@ -265,7 +265,7 @@
  $( document ).ready(function() {
    function setMaxHeight(element){
      this.$element = $(element);
-     var maxHeight = $(window).height() - 300;
+     var maxHeight = $(window).height() - 300 * $(window).width()/582;
      this.$element.css({'max-height' : maxHeight});
    }
 
